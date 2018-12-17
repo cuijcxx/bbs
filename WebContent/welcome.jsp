@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>欢迎</title>
 <style type="text/css">
-.pos_right {position:relative; left:60px;}
+/* .pos_right {position:relative; left:60px;} */
 .center {text-align:center;}
 </style>
 </head>
@@ -20,6 +20,7 @@
 		<br/>
 		<input id="submitButton"  type="submit" value="登录" onclick="javascript:this.form.action='login.jsp'"/>
         <input id="registerButton" class="pos_right" type="submit" value="注册" onclick="javascript:this.form.action='register_page.jsp'"/>
+  		<input id="manager_submitButton" type="submit" value="管理员登陆" onclick="javascript:this.form.action='manager_login.jsp'"/>
   	</form>
 </body>
 </html>

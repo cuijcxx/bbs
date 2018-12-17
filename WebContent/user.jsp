@@ -84,6 +84,8 @@ div.one_block a:hover,div.one_block a:active
 	java.sql.Statement stmt;
 	java.sql.ResultSet rst;
 	
+	String userno=new String(request.getParameter("UserNo"));
+	
 	try {
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC",
@@ -99,7 +101,7 @@ div.one_block a:hover,div.one_block a:active
 			String content = rst.getString("BlockName");
 			int BlockNo = rst.getInt("BlocksNo");
 			%>
-			<div class="one_block"><a href="post.jsp?BlockNo=<%=BlockNo %>&BlockName=<%=content%>"><%=content%></a></div>
+			<div class="one_block"><a href="post.jsp?UserNo=<%= userno %>&BlockNo=<%=BlockNo%>&BlockName=<%=content%>"><%=content%></a></div>
 		<%
 		}
 		rst.close();
