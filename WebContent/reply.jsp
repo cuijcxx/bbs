@@ -21,7 +21,14 @@
 			conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC",
 					"root", "485769");
 			stmt = conn.createStatement();
-			String sql = "select Content,Clicks,PostUser,Time from Posts where PostNo=" + postno;
+			String sql;
+			
+			if(request.getParameter("Flag")==null) {
+				sql ="update Posts set clicks=clicks+1 where postno=" + postno;
+				stmt.executeUpdate(sql);
+			}
+			
+			sql = "select Content,Clicks,PostUser,Time,ReplyNum from Posts where PostNo=" + postno;
 			rst = stmt.executeQuery(sql);
 			if (rst.next()) {
 	%>
@@ -30,10 +37,10 @@
 	<p>原帖：</p>
 	<p>#<%=postno%></p>
 	<p><%=rst.getString("Content")%></p>
-	<p>发帖人：<%=rst.getNString("PostUser")%>&nbsp&nbsp点击：<%=rst.getInt("Clicks")%>&nbsp&nbsp发帖时间：<%=rst.getString("Time")%></p>
+	<p>发帖人：<%=rst.getNString("PostUser")%>&nbsp&nbsp点击：<%=rst.getInt("Clicks")%>&nbsp&nbsp回复数：<%=rst.getInt("ReplyNum") %>&nbsp&nbsp发帖时间：<%=rst.getString("Time")%></p>
 	<hr>
 	<%
-		sql = "select Floor,ReplyUser,replycontent,replytime,praisenum from replies where originalno="
+		sql = "select ReplyNo,Floor,ReplyUser,replycontent,replytime,praisenum from replies where originalno="
 						+ postno;
 	rst = stmt.executeQuery(sql);
 	%>
@@ -43,16 +50,20 @@
 		暂无回帖
 	<%}
 	else{
-	rst.previous();%>
-	<%
-	while(rst.next()){
-		%>
-		<p>#<%=rst.getInt("floor")%></p>
-		<p><%=rst.getString("replyContent")%></p>
-		<p>回复人：<%=rst.getNString("replyUser")%>&nbsp&nbsp点赞：<%=rst.getInt("praisenum")%>&nbsp&nbsp回复时间：<%=rst.getString("replyTime")%></p>
-		<hr>
+		rst.previous();%>
 		<%
-	}
+		while(rst.next()){
+			int replyno = rst.getInt("replyno");
+			%>
+			<p>#<%=rst.getInt("floor")%></p>
+			<p><%=rst.getString("replyContent")%></p>
+			<p>回复人：<%=rst.getNString("replyUser")%>&nbsp&nbsp点赞：<%=rst.getInt("praisenum")%>&nbsp&nbsp回复时间：<%=rst.getString("replyTime")%></p>
+			<a href="add_a_praise.jsp?UserNo=<%=userno%>&PostNo=<%=postno%>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>&ReplyNo=<%=replyno%>">
+			<button>点赞</button>
+			</a>
+			<hr>
+			<%
+		}
 	}%>
 	<form action="" method="post">
 	<textarea name="content" rows="10" cols="40" maxlength="100" placeholder="请开始你的表演"></textarea>

@@ -6,11 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>插入回复</title>
+<title>新增回复</title>
 </head>
 <body>
 <%
-	String content = new String(request.getParameter("content"));
+	String content = new String(request.getParameter("content").getBytes("iso-8859-1"), "utf-8");
 	//out.print(content);
 	//out.print(request.getParameter("UserNo"));
 	//out.print(request.getParameter("aa"));
@@ -28,6 +28,9 @@
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC",
 				"root", "485769");
+		stmt1 = conn.createStatement();
+		String sql ="update Posts set replynum=replynum+1 where postno=" + postno;
+		stmt1.executeUpdate(sql);
 
 		int floor;
 		String replyuser;
@@ -35,7 +38,6 @@
 		//Timestamp time = new Timestamp(date.getTime());
 		//out.print(time);
 		
-		stmt1 = conn.createStatement();
 		String sql1 = "select ifnull(max(Floor),0) as maxfloor from replies where OriginalNo=" + postno;
 		rst1 = stmt1.executeQuery(sql1);
 		rst1.next();
@@ -47,7 +49,7 @@
 		rst2.next();
 		replyuser = rst2.getString("username");
 		
-		String sql = "insert into Replies(OriginalNo,Floor,ReplyUserNo,ReplyUser,ReplyContent,ReplyTime,PraiseNum) values("
+		sql = "insert into Replies(OriginalNo,Floor,ReplyUserNo,ReplyUser,ReplyContent,ReplyTime,PraiseNum) values("
 				+ postno + "," + floor + "," + userno + ",'" + replyuser + "','" + content + "',current_timestamp()," + 0 + ")";
 		stmt1.executeUpdate(sql);
 		%>

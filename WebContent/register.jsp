@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%
-		String username = new String(request.getParameter("username"));
+		String username = new String(request.getParameter("username").getBytes("iso-8859-1"), "utf-8");
 		String gender = new String(request.getParameter("gender"));
 		//String age = new String(request.getParameter("age"));
 		String birthday = new String(request.getParameter("birthday"));
