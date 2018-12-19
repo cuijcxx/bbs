@@ -15,7 +15,6 @@
 		java.sql.Connection conn;
 		java.sql.Statement stmt;
 		java.sql.ResultSet rst;
-
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC",
@@ -28,7 +27,8 @@
 			<!-- <button onclick="window.location.href='add_post.jsp'">发帖</button> -->
 			<button type="button" onclick="window.location.href='user.jsp?UserNo=<%=userno%>'">返回</button>
 			</div>
-			<div><p style="font-weight:bold;"><%=BlockName%></p></div>
+			<div><p><%=BlockName%></p></div>
+			<div><button type="button" onclick="window.location.href='modify_block.jsp?UserNo=<%=userno%>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>'">修改版块信息</button></div>
 	<%
 	while(rst.next()){
 		String title = rst.getString("Title");
@@ -41,24 +41,16 @@
 		%>
 		<div class="one_post">
 		<hr>
-		<a href="reply.jsp?UserNo=<%= userno %>&PostNo=<%= postno %>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>" style="text-decoration:none;color:#000000;">
+		<a href="block_reply.jsp?UserNo=<%=userno%>&PostNo=<%=postno%>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>" style="text-decoration:none;color:#000000;">
 		<p>#<%=postno %></p>
 		<p>标题：<%=title %></p>
 		<p><%=content %></p>
 		</a>
 		<p>发帖人：<%=postuser%>&nbsp&nbsp点击：<%=clicks %>&nbsp&nbsp回复数：<%=replynum %>&nbsp&nbsp发帖时间：<%=time %></p>
+		<button type="button" onclick="window.location.href='block_delete_post_check.jsp?UserNo=<%=userno%>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>&PostNo=<%=postno%>'">删除帖子</button>
 		</div>
 		<%
-	}%>
-	<hr>
-	<form action="" method="post">
-	<textarea name="title" rows="1" cols="40" maxlength="20" placeholder="标题"></textarea>
-	<br>
-	<textarea name="content" rows="10" cols="40" maxlength="150" placeholder="请开始你的表演"></textarea>
-	<br>
-	<input type="submit" value="发帖" onclick="javascript:this.form.action='add_a_post.jsp?UserNo=<%=userno%>&BlockNo=<%=blockNo%>&BlockName=<%=BlockName%>'">
-	</form>
-	<%
+	}
 	
 	rst.close();
 	stmt.close();

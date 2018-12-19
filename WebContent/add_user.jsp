@@ -7,30 +7,30 @@
 <title>增加用户</title>
 </head>
 <body>
+	<%
+	String UserNo=new String(request.getParameter("UserNo"));
+	%>
 	<form action="" method="post">
-		<label>账号：</label>
-		<input name="userno" type="text">
-		<br/>
-		<label>用户名称：</label>
+		<label>用户昵称：</label>
 		<input name="username" type="text">
 		<br/>
 		<label>性别：</label>
-		<input name="gender" type="text">
-		<br/>
-		<label>年龄：</label>
-		<input name="age" type="text">
-		<br/>
+		<select name="gender">
+		<option value="male">男</option>
+		<option value="female">女</option>
+		</select>
+		<br/>		
 		<label>生日：</label>
-		<input name="birthday" type="text">
+		<input name="birthday" type="date">
 		<br/>
 		<label>密码：</label>
 		<input name="password" type="password">
 		<br/>
 		<label>邮箱：</label>
-		<input name="email" type="text">
+		<input name="email" type="email">
 		<br/>
-		<input id="submitButton"  type="submit" value="提交" onclick="javascript:this.form.action='add_user_check.jsp'"/>
-		<input id="backButton"  type="submit" value="返回" onclick="javascript:this.form.action='database_manager.jsp'"/>
+		<input id="submitButton"  type="submit" value="提交" onclick="javascript:this.form.action='add_user_check.jsp?UserNo=<%=UserNo %>'"/>
+		<input id="backButton"  type="submit" value="返回" onclick="javascript:this.form.action='database_manager.jsp?UserNo=<%=UserNo %>'"/>
   	</form>
 </body>
 </html>
